@@ -1,0 +1,188 @@
+openapi: 3.0.1
+info:
+  title: Inventory Service API
+  description: Inventory Service API for Ticket Booking Microservices System
+  version: v1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/v1/inventory/event/{eventId}/capacity/{capacity}:
+    put:
+      tags:
+        - inventory-controller
+      operationId: updateEventCapacity
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: capacity
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /api/v1/inventory/venue:
+    post:
+      tags:
+        - inventory-controller
+      operationId: inventoryCreateVenue
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Venue'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/inventory/event:
+    post:
+      tags:
+        - inventory-controller
+      operationId: inventoryCreateEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventInventoryRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/inventory/venues:
+    get:
+      tags:
+        - inventory-controller
+      operationId: inventoryGetAllVenues
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VenueInventoryResponse'
+  /api/v1/inventory/venue/{venueId}:
+    get:
+      tags:
+        - inventory-controller
+      operationId: inventoryByVenueId
+      parameters:
+        - name: venueId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VenueInventoryResponse'
+  /api/v1/inventory/events:
+    get:
+      tags:
+        - inventory-controller
+      operationId: inventoryGetAllEvents
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventInventoryResponse'
+  /api/v1/inventory/event/{eventId}:
+    get:
+      tags:
+        - inventory-controller
+      operationId: inventoryForEvent
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventInventoryResponse'
+components:
+  schemas:
+    Venue:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          type: string
+        totalCapacity:
+          type: integer
+          format: int64
+    EventInventoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        totalCapacity:
+          type: integer
+          format: int64
+        ticketPrice:
+          type: number
+        venueId:
+          type: integer
+          format: int64
+    VenueInventoryResponse:
+      type: object
+      properties:
+        venueId:
+          type: integer
+          format: int64
+        venueName:
+          type: string
+        venueAddress:
+          type: string
+        totalCapacity:
+          type: integer
+          format: int64
+    EventInventoryResponse:
+      type: object
+      properties:
+        eventId:
+          type: integer
+          format: int64
+        event:
+          type: string
+        capacity:
+          type: integer
+          format: int64
+        venue:
+          $ref: '#/components/schemas/Venue'
+        ticketPrice:
+          type: number

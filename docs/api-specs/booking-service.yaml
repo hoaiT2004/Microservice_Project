@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Booking Service API
+  description: Booking Service API for Ticket Booking Microservices System
+  version: v1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+paths:
+  /api/v1/booking:
+    post:
+      tags:
+        - booking-controller
+      operationId: createBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+  /api/v1/auth/register:
+    post:
+      tags:
+        - booking-controller
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/auth/login:
+    post:
+      tags:
+        - booking-controller
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    BookingRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        eventId:
+          type: integer
+          format: int64
+        ticketCount:
+          type: integer
+          format: int64
+    BookingResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        eventId:
+          type: integer
+          format: int64
+        ticketCount:
+          type: integer
+          format: int64
+        totalPrice:
+          type: number
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
