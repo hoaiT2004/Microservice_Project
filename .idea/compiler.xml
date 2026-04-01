@@ -9,8 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
         <module name="eureka-server" />
-        <module name="gateway" />
         <module name="notification-service" />
+        <module name="gateway" />
       </profile>
       <profile name="Annotation profile for order-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />

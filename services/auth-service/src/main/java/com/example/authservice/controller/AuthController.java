@@ -1,9 +1,9 @@
 package com.example.authservice.controller;
 
-import com.example.auth_service.dto.AuthRequest;
-import com.example.auth_service.dto.AuthResponse;
-import com.example.auth_service.dto.RegisterRequest;
-import com.example.auth_service.service.AuthService;
+import com.example.authservice.dto.AuthRequest;
+import com.example.authservice.dto.AuthResponse;
+import com.example.authservice.dto.RegisterRequest;
+import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

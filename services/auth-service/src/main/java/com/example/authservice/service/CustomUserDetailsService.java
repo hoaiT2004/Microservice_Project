@@ -1,7 +1,7 @@
 package com.example.authservice.service;
 
-import com.example.auth_service.entity.User;
-import com.example.auth_service.repository.UserRepository;
+import com.example.authservice.entity.User;
+import com.example.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,9 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+           throw new UsernameNotFoundException("User not found with username: " + username);
+        }
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);

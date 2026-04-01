@@ -1,10 +1,10 @@
 package com.example.authservice.service;
 
-import com.example.auth_service.dto.AuthRequest;
-import com.example.auth_service.dto.AuthResponse;
-import com.example.auth_service.dto.RegisterRequest;
-import com.example.auth_service.entity.User;
-import com.example.auth_service.repository.UserRepository;
+import com.example.authservice.dto.AuthRequest;
+import com.example.authservice.dto.AuthResponse;
+import com.example.authservice.dto.RegisterRequest;
+import com.example.authservice.entity.User;
+import com.example.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

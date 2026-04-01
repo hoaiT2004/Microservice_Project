@@ -25,10 +25,10 @@ spring:
             - Path=/api/v1/booking/**
           filters:
             - AuthenticationFilter
-            - name: CircuitBreaker
-              args:
-                name: bookingServiceCircuitBreaker
-                fallbackUri: forward:/fallbackRoute
+#            - name: CircuitBreaker
+#              args:
+#                name: bookingServiceCircuitBreaker
+#                fallbackUri: forward:/fallbackRoute
 
 server:
   port: 8090
