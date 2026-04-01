@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/services/order-service" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/services/auth-service" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/services/notification-service" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/gateway/src/main/resources" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
