@@ -1,24 +1,6 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_data:/var/lib/mysql
-      - db_data:/var/log/mysql
-    networks:
-      - ticket-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-
   eureka-server:
     build:
       context: ./eureka-server
@@ -41,6 +23,8 @@ services:
     container_name: api-gateway
     ports:
       - "8090:8090"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -55,17 +39,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/inventory_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/inventory_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
-      - EUREKA_CLIENT_SERVICEURL_DEFAULT_ZONE=http://eureka-server:8761/eureka   
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
-      mysql:
-        condition: service_healthy
       eureka-server:
         condition: service_healthy
     networks:
       - ticket-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   booking-service:
     build:
@@ -75,19 +59,22 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/booking_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/booking_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
-      - EUREKA_CLIENT_SERVICEURL_DEFAULT_ZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka-broker:29092
       - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=booking
+      - INVENTORY_SERVICE_URL=http://inventory-service/api/v1/inventory
     depends_on:
-      mysql:
-        condition: service_healthy
       eureka-server:
         condition: service_healthy
+      kafka-broker:
+        condition: service_started
     networks:
       - ticket-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   order-service:
     build:
@@ -97,18 +84,60 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/order_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/order_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
-      - EUREKA_CLIENT_SERVICEURL_DEFAULT_ZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka-broker:29092
     depends_on:
-      mysql:
+      eureka-server:
         condition: service_healthy
+      kafka-broker:
+        condition: service_started
+    networks:
+      - ticket-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/auth_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
       eureka-server:
         condition: service_healthy
     networks:
       - ticket-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  notification-service:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    ports:
+      - "8086:8086"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS=kafka-broker:29092
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      kafka-broker:
+        condition: service_started
+    networks:
+      - ticket-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
@@ -153,24 +182,6 @@ services:
     networks:
       - ticket-network
 
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry:7.5.0
-    hostname: kafka-schema-registry
-    container_name: kafka-schema-registry
-    depends_on:
-      - kafka-broker
-    ports:
-      - "8083:8081"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka-broker:29092'
-      SCHEMA_REGISTRY_LISTENERS: http://kafka-schema-registry:8081
-    networks:
-      - ticket-network
-
 networks:
   ticket-network:
     driver: bridge
-
-volumes:
-  db_data:

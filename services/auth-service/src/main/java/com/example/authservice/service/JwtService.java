@@ -1,6 +1,8 @@
 package com.example.authservice.service;
 
+import com.example.authservice.exception.TokenExpiredException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -21,8 +23,11 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    @Value("${jwt.access-expiration}")
+    private long accessExpiration;
+
+    @Value("${jwt.refresh-expiration}")
+    private long refreshExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -38,29 +43,45 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            // When token is expired, we can still get the claims for analysis if needed
+            return e.getClaims();
+        }
     }
 
-    private Boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public void validateToken(String token, UserDetails userDetails) {
+        try {
+            if (!extractUsername(token).equals(userDetails.getUsername())) {
+                throw new Exception(); // Will be caught and wrapped in InvalidTokenException
+            }
+            // The parseClaimsJws in extractAllClaims will throw ExpiredJwtException if expired
+            Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("JWT token is expired");
+        } catch (Exception e) {
+            throw new com.example.authservice.exception.InvalidTokenException("JWT token is invalid");
+        }
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        // Add roles to claims
+    public String generateAccessToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails, accessExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    private String generateToken(Map<String, Object> claims, UserDetails userDetails, long expiration) {
         claims.put("roles", userDetails.getAuthorities());
-        return createToken(claims, userDetails.getUsername());
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();

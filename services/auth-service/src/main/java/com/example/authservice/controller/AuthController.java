@@ -2,6 +2,7 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
+import com.example.authservice.dto.RefreshTokenRequest;
 import com.example.authservice.dto.RegisterRequest;
 import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(authService.refreshTokens(request));
     }
 
     @GetMapping("/validate")
