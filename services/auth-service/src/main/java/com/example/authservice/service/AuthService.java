@@ -4,10 +4,7 @@ import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.dto.RefreshTokenRequest;
 import com.example.authservice.dto.RegisterRequest;
-import com.example.authservice.entity.Customer;
 import com.example.authservice.entity.User;
-import com.example.authservice.exception.TokenExpiredException;
-import com.example.authservice.repository.CustomerRepository;
 import com.example.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +20,6 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,16 +51,7 @@ public class AuthService {
                 .role(role)
                 .build();
 
-        User savedUser = userRepository.save(user);
-
-        if (role.equalsIgnoreCase("CUSTOMER")) {
-            Customer customer = Customer.builder()
-                    .userId(savedUser.getId())
-                    .name(request.getName())
-                    .address(null)
-                    .build();
-            customerRepository.save(customer);
-        }
+        userRepository.save(user);
 
         return "User registered successfully";
     }

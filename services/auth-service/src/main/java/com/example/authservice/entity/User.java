@@ -27,5 +27,5 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String role; // e.g., "ADMIN", "CUSTOMER"
+    private String role; // "ADMIN", "CUSTOMER"
 }

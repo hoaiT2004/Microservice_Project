@@ -81,17 +81,4 @@ public class InventoryController {
         Event response = inventoryService.createEvent(event);
         return ResponseEntity.ok(response);
     }
-
-
-    @PutMapping("/inventory/event/{eventId}/capacity/{capacity}")
-    public ResponseEntity<Void> updateEventCapacity(@PathVariable("eventId") Long eventId,
-                                                    @PathVariable("capacity") Long ticketsBooked) {
-        // Now delegating to the safe method, but this endpoint might be obsolete if inventoryForEvent handles it
-        boolean success = inventoryService.decreaseEventCapacity(eventId, ticketsBooked);
-        if (success) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 }
