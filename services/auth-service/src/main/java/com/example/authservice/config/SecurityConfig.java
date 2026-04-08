@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/eureka/**").permitAll()
+                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/eureka/**", "/health").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

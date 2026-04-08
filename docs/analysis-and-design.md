@@ -30,13 +30,14 @@ Microservices. Nó giải thích các quyết định về kiến trúc và các
 
 List the microservices in your system and their responsibilities.
 
-| Tên dịch vụ       | Trách nhiệm                                                         | Stack công nghệ                    |
-|-------------------|---------------------------------------------------------------------|------------------------------------|
-| Inventory Service | Quản lý thông tin địa điểm tổ chức và sự kiện                       | Spring Boot, MySQL                 |
-| Booking Service   | Quản lý thông tin người dùng và xử lý yêu cầu đặt vé                | Spring Boot, MySQL, Kafka          |
-| Order Service     | Xử lý các yêu cầu đặt vé từ Booking service và cập nhật số lượng vé | Spring Boot, MySQL, Kafka          |
-| Eureka Server     | Khám phá và đăng ký dịch vụ                                         | Spring Cloud Netflix Eureka Server |
-| Gateway           | Định tuyến yêu cầu và đóng vai trò như điểm vào hệ thống            | Spring Cloud Gateway               |
+| Tên dịch vụ           | Trách nhiệm                                                          | Stack công nghệ                    |
+|------------------------|----------------------------------------------------------------------|------------------------------------|
+| Inventory Service      | Quản lý thông tin địa điểm tổ chức và sự kiện                        | Spring Boot, MySQL                 |
+| Booking Service        | Quản lý thông tin người dùng và xử lý yêu cầu đặt vé                 | Spring Boot, MySQL, Kafka          |
+| Order Service          | Xử lý các yêu cầu đặt vé từ Booking service và cập nhật số lượng vé  | Spring Boot, MySQL, Kafka          |
+| Auth Service           | Xác thực người dùng, cấp phát và xác thực JWT token                  | Spring Boot, MySQL, Spring Security|
+| Eureka Server          | Khám phá và đăng ký dịch vụ                                          | Spring Cloud Netflix Eureka Server |
+| Gateway                | Định tuyến yêu cầu và đóng vai trò như điểm vào hệ thống             | Spring Cloud Gateway               |
 
 ---
 

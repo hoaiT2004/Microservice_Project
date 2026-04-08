@@ -4,8 +4,10 @@ import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.dto.RefreshTokenRequest;
 import com.example.authservice.dto.RegisterRequest;
+import com.example.authservice.entity.Customer;
 import com.example.authservice.entity.User;
 import com.example.authservice.exception.TokenExpiredException;
+import com.example.authservice.repository.CustomerRepository;
 import com.example.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,9 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -43,14 +48,25 @@ public class AuthService {
             throw new RuntimeException("Email is already taken");
         }
 
+        String role = (request.getRole() != null && !request.getRole().isEmpty()) ? request.getRole() : "CUSTOMER";
+
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .role(request.getRole() != null && !request.getRole().isEmpty() ? request.getRole() : "CUSTOMER")
+                .role(role)
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        if (role.equalsIgnoreCase("CUSTOMER")) {
+            Customer customer = Customer.builder()
+                    .userId(savedUser.getId())
+                    .name(request.getName())
+                    .address(null)
+                    .build();
+            customerRepository.save(customer);
+        }
 
         return "User registered successfully";
     }
