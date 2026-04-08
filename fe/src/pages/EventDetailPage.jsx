@@ -141,7 +141,7 @@ export default function EventDetailPage() {
                   </div>
                 </div>
                 <p className="success-note">
-                  📧 Email xác nhận đã được gửi tới hộp thư của bạn.
+                  ✅ Đơn đặt vé của bạn đang được xử lý.
                 </p>
                 <button className="btn-primary full-width" onClick={() => navigate('/events')}>
                   Về trang sự kiện

@@ -119,26 +119,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  notification-service:
-    build:
-      context: ./services/notification-service
-      dockerfile: Dockerfile
-    container_name: notification-service
-    ports:
-      - "8086:8086"
-    environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS=kafka-broker:29092
-    depends_on:
-      eureka-server:
-        condition: service_healthy
-      kafka-broker:
-        condition: service_started
-    networks:
-      - ticket-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     hostname: zookeeper

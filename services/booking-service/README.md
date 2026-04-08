@@ -38,7 +38,6 @@ Booking Service kết nối với các service:
 
 - **Inventory Service**: Gọi tới Inventory Service để lấy thông tin về sự kiện và kiểm tra số lượng vé còn lại
 - **Order Service**: Gửi yêu cầu đặt vé đã xử lý tới Order Service qua Kafka topic `booking`
-- **Notification Service**: Gửi sự kiện đăng ký thành công qua Kafka topic `register_success`
 
 ## Cấu hình
 

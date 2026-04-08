@@ -1,20 +1,21 @@
 package com.example.booking_service.service;
 
-import com.example.booking_service.client.InventoryServiceClient;
-import com.example.booking_service.entity.Customer;
-import com.example.booking_service.event.BookingEvent;
-import com.example.booking_service.event.RegistrationEvent;
-import com.example.booking_service.repository.CustomerRepository;
-import com.example.booking_service.request.BookingRequest;
-import com.example.booking_service.response.BookingResponse;
-import com.example.booking_service.response.InventoryResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import com.example.booking_service.client.InventoryServiceClient;
+import com.example.booking_service.entity.Customer;
+import com.example.booking_service.event.BookingEvent;
+import com.example.booking_service.repository.CustomerRepository;
+import com.example.booking_service.request.BookingRequest;
+import com.example.booking_service.response.BookingResponse;
+import com.example.booking_service.response.InventoryResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -48,16 +49,6 @@ public class BookingService {
             customer.setRole("CUSTOMER");
         }
         Customer savedCustomer = customerRepository.save(customer);
-
-        // Publish registration success event to Kafka
-        RegistrationEvent event = RegistrationEvent.builder()
-                .userId(savedCustomer.getId())
-                .username(savedCustomer.getUsername())
-                .email(savedCustomer.getEmail())
-                .build();
-        kafkaTemplate.send("register_success", event);
-        log.info("Sent registration success event for user: {}", event.getUsername());
-
         return savedCustomer;
     }
 
@@ -79,11 +70,7 @@ public class BookingService {
         // Create booking event
         final BookingEvent bookingEvent = createBookingEvent(request, customer, inventoryResponse);
 
-        // Send booking success event to Kafka for notification
-        kafkaTemplate.send("buy_ticket_success", bookingEvent);
-        log.info("Sent buy ticket success event to kafka: {}", bookingEvent);
-        
-        // Send booking to order-service on a Kafka topic
+        // Send booking to order-service via Kafka
         kafkaTemplate.send("booking", bookingEvent);
         log.info("Booking sent to kafka for order processing: {}", bookingEvent);
 

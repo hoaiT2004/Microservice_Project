@@ -279,7 +279,6 @@ springdoc.api-docs.path=/v3/api-docs
 ### Hướng phát triển tương lai:
 
 - Thêm Payment Service để xử lý việc thanh toán trước khi lưu order và cập nhật lượng vé
-- Triển khai Notification Service để gửi thông báo qua email, push notifications
 - Mở rộng khả năng quốc tế hóa với hỗ trợ đa ngôn ngữ
 
 ---

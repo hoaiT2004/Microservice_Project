@@ -2,7 +2,7 @@
 
 ## Tổng quan
 - **Mục Đích**: Hệ thống microservices cung cấp nền tảng đặt vé, cho phép người dùng tạo, quản lý và đặt vé tham gia các sự kiện.
-- **Thành Phần Chính**: Hệ thống bao gồm 7 thành phần chính: API Gateway, Eureka Server, Auth Service, Inventory Service, Booking Service, Order Service và Notification Service.
+- **Thành Phần Chính**: Hệ thống bao gồm 6 thành phần chính: API Gateway, Eureka Server, Auth Service, Inventory Service, Booking Service và Order Service.
 
 ## Thành Phần Hệ Thống
 - **API Gateway** (port 8090): Điểm vào duy nhất cho tất cả các request từ client, xử lý định tuyến và xác thực JWT.
@@ -11,7 +11,6 @@
 - **Inventory Service** (port 8082): Quản lý thông tin sự kiện và địa điểm tổ chức sự kiện.
 - **Booking Service** (port 8081): Quản lý thông tin người dùng và xử lý yêu cầu đặt vé.
 - **Order Service** (port 8083): Xử lý yêu cầu đặt vé và cập nhật số lượng vé sự kiện.
-- **Notification Service** (port 8086): Gửi email thông báo đặt vé và đăng ký tài khoản thành công.
 
 ## Health Check
 
@@ -24,7 +23,7 @@ Response: { "status": "ok" }
 
 ## Giao Tiếp
 - **REST APIs**: Các service giao tiếp với nhau chủ yếu thông qua REST APIs.
-- **Kafka**: Giao tiếp bất đồng bộ giữa Booking Service → Order Service và Booking/Order Service → Notification Service.
+- **Kafka**: Giao tiếp bất đồng bộ giữa Booking Service → Order Service.
 - **Mạng Nội Bộ**: Các service giao tiếp qua Docker network `ticket-network` trong môi trường containerized.
 
 ## Luồng Dữ Liệu
@@ -37,15 +36,12 @@ Response: { "status": "ok" }
 7. Order Service nhận và xử lý message từ Kafka.
 8. Order Service lưu order vào DB.
 9. Order Service gọi Inventory Service để cập nhật số lượng vé.
-10. Notification Service nhận sự kiện từ Kafka và gửi email xác nhận tới người dùng.
 
 ## Kafka Topics
 
-| Topic                | Producer        | Consumer(s)                    |
-|----------------------|-----------------|-------------------------------|
-| `booking`            | Booking Service | Order Service                  |
-| `register_success`   | Booking Service | Notification Service           |
-| `buy_ticket_success` | Order Service   | Notification Service           |
+| Topic     | Producer        | Consumer(s)   |
+|-----------|-----------------|---------------|
+| `booking` | Booking Service | Order Service |
 
 ## Diagram
 ![Sơ đồ kiến trúc hệ thống](./assets/architecture_diagram.png).
