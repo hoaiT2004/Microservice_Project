@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class VenueInventoryResponse {
     private String venueName;
     private String venueAddress;
     private Long totalCapacity;
+    private List<EventInventoryResponse> events;
 }

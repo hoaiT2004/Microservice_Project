@@ -33,28 +33,28 @@ public class AuthService {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    public String register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already taken");
-        }
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email is already taken");
-        }
-
-        String role = (request.getRole() != null && !request.getRole().isEmpty()) ? request.getRole() : "CUSTOMER";
-
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .email(request.getEmail())
-                .role(role)
-                .build();
-
-        userRepository.save(user);
-
-        return "User registered successfully";
-    }
+//    public String register(RegisterRequest request) {
+//        if (userRepository.existsByUsername(request.getUsername())) {
+//            throw new RuntimeException("Username is already taken");
+//        }
+//
+//        if (userRepository.existsByEmail(request.getEmail())) {
+//            throw new RuntimeException("Email is already taken");
+//        }
+//
+//        String role = (request.getRole() != null && !request.getRole().isEmpty()) ? request.getRole() : "CUSTOMER";
+//
+//        User user = User.builder()
+//                .username(request.getUsername())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .email(request.getEmail())
+//                .role(role)
+//                .build();
+//
+//        userRepository.save(user);
+//
+//        return "User registered successfully";
+//    }
 
     public AuthResponse login(AuthRequest request) {
         authenticationManager.authenticate(

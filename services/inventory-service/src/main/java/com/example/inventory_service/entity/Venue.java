@@ -1,7 +1,11 @@
 package com.example.inventory_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +26,8 @@ public class Venue {
 
     @Column(name = "total_capacity")
     private Long totalCapacity;
+
+    @OneToMany(mappedBy = "venue", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Event> events = new ArrayList<>();
 }
