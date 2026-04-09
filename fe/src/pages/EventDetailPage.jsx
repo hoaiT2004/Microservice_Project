@@ -17,7 +17,6 @@ export default function EventDetailPage() {
   const [bookingResult, setBookingResult] = useState(null)
 
   useEffect(() => {
-    // POST /api/v1/inventory/event/{id} with no params returns event info
     api
       .post(`/api/v1/inventory/event/${id}`)
       .then((res) => setEvent(res.data))
@@ -25,15 +24,13 @@ export default function EventDetailPage() {
       .finally(() => setLoadingEvent(false))
   }, [id])
 
-  const maxTickets = event ? Math.min(event.capacity, 10) : 1
-
   const handleBook = async (e) => {
     e.preventDefault()
     setBookError('')
     setBooking(true)
     try {
       const res = await api.post('/api/v1/booking', {
-        userId: Number(auth.customerId),
+        username: auth.username,
         eventId: Number(id),
         ticketCount: Number(ticketCount),
       })
@@ -69,6 +66,38 @@ export default function EventDetailPage() {
     )
   }
 
+  // Success state
+  if (bookingResult) {
+    return (
+      <div className="container">
+        <div className="booking-success-card">
+          <div className="success-icon">🎉</div>
+          <h2>Đặt vé thành công!</h2>
+          <div className="success-details">
+            <div className="success-row">
+              <span>Sự kiện</span>
+              <strong>{event.event}</strong>
+            </div>
+            <div className="success-row">
+              <span>Số vé</span>
+              <strong>{bookingResult.ticketCount}</strong>
+            </div>
+            <div className="success-row total-row">
+              <span>Tổng tiền</span>
+              <strong className="total-price">
+                {Number(bookingResult.totalPrice).toLocaleString('vi-VN')} ₫
+              </strong>
+            </div>
+          </div>
+          <p className="success-note">✅ Đơn đặt vé của bạn đang được xử lý.</p>
+          <button className="btn-primary full-width" onClick={() => navigate('/')}>
+            Về trang chủ
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container">
       <button className="btn-back" onClick={() => navigate('/events')}>
@@ -77,7 +106,7 @@ export default function EventDetailPage() {
 
       {event && (
         <div className="detail-layout">
-          {/* Event Info */}
+          {/* Event + Venue Info */}
           <div className="detail-info-card">
             <div className="detail-header">
               <h1>{event.event}</h1>
@@ -100,7 +129,7 @@ export default function EventDetailPage() {
                 <span className="info-value">{event.venue?.address}</span>
               </div>
               <div className="info-item">
-                <span className="info-label">🏟 Sức chứa</span>
+                <span className="info-label">🏟 Sức chứa venue</span>
                 <span className="info-value">
                   {event.venue?.totalCapacity?.toLocaleString('vi-VN')} chỗ
                 </span>
@@ -120,34 +149,7 @@ export default function EventDetailPage() {
 
           {/* Booking Panel */}
           <div className="detail-booking-card">
-            {bookingResult ? (
-              <div className="booking-success-panel">
-                <div className="success-icon">🎉</div>
-                <h3>Đặt vé thành công!</h3>
-                <div className="success-details">
-                  <div className="success-row">
-                    <span>Sự kiện</span>
-                    <strong>{event.event}</strong>
-                  </div>
-                  <div className="success-row">
-                    <span>Số vé</span>
-                    <strong>{bookingResult.ticketCount}</strong>
-                  </div>
-                  <div className="success-row total-row">
-                    <span>Tổng tiền</span>
-                    <strong className="total-price">
-                      {Number(bookingResult.totalPrice).toLocaleString('vi-VN')} ₫
-                    </strong>
-                  </div>
-                </div>
-                <p className="success-note">
-                  ✅ Đơn đặt vé của bạn đang được xử lý.
-                </p>
-                <button className="btn-primary full-width" onClick={() => navigate('/events')}>
-                  Về trang sự kiện
-                </button>
-              </div>
-            ) : event.capacity > 0 ? (
+            {event.capacity > 0 ? (
               <>
                 <h3>Đặt vé</h3>
                 {bookError && <div className="alert alert-error">{bookError}</div>}
@@ -165,7 +167,7 @@ export default function EventDetailPage() {
                       <input
                         type="number"
                         min="1"
-                        max={maxTickets}
+                        max={Math.min(event.capacity, 10)}
                         value={ticketCount}
                         onChange={(e) => setTicketCount(e.target.value)}
                         required
@@ -174,13 +176,15 @@ export default function EventDetailPage() {
                         type="button"
                         className="counter-btn"
                         onClick={() =>
-                          setTicketCount((v) => Math.min(maxTickets, Number(v) + 1))
+                          setTicketCount((v) =>
+                            Math.min(Math.min(event.capacity, 10), Number(v) + 1),
+                          )
                         }
                       >
                         +
                       </button>
                     </div>
-                    <small>Tối đa {maxTickets} vé / lần đặt</small>
+                    <small>Tối đa {Math.min(event.capacity, 10)} vé / lần đặt</small>
                   </div>
 
                   <div className="booking-summary">
@@ -191,16 +195,16 @@ export default function EventDetailPage() {
                     <div className="summary-row summary-total">
                       <span>Tổng cộng</span>
                       <strong>
-                        {(
-                          Number(ticketCount) * Number(event.ticketPrice)
-                        ).toLocaleString('vi-VN')}{' '}
+                        {(Number(ticketCount) * Number(event.ticketPrice)).toLocaleString(
+                          'vi-VN',
+                        )}{' '}
                         ₫
                       </strong>
                     </div>
                   </div>
 
                   <button type="submit" className="btn-primary full-width" disabled={booking}>
-                    {booking ? 'Đang xử lý...' : '🎫 Xác nhận đặt vé'}
+                    {booking ? 'Đang xử lý...' : '🎫 Đặt vé'}
                   </button>
                 </form>
               </>

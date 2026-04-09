@@ -38,14 +38,18 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     return onError(exchange, "{\"error\":\"missing_token\", \"message\":\"Missing authorization header\"}", HttpStatus.UNAUTHORIZED);
                 }
 
-                String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+                if (authHeader == null || authHeader.isBlank()) {
+                    return onError(exchange, "{\"error\":\"missing_token\", \"message\":\"Missing authorization header\"}", HttpStatus.UNAUTHORIZED);
+                }
+                if (authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
 
                 return webClientBuilder.build()
                         .get()
-                        .uri("http://auth-service/api/v1/auth/validate?token=" + authHeader)
+                        .uri("http://auth-service/api/v1/auth/validate")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + authHeader)
                         .retrieve()
                         .bodyToMono(String.class)
                         .map(response -> exchange)

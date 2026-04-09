@@ -29,6 +29,12 @@ spring:
 #              args:
 #                name: bookingServiceCircuitBreaker
 #                fallbackUri: forward:/fallbackRoute
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/orders/**
+          filters:
+            - AuthenticationFilter
 
 server:
   port: 8090
@@ -79,6 +85,8 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     urls:
+      - name: Auth Service
+        url: /docs/auth_service/v3/api-docs
       - name: Inventory Service
         url: /docs/inventory_service/v3/api-docs
       - name: Booking Service

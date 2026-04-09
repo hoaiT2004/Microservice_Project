@@ -46,7 +46,7 @@ public class BookingService {
         log.info("Booking sent to kafka for order processing: {}", bookingEvent);
 
         return BookingResponse.builder()
-                .userId(bookingEvent.getUserId())
+                .username(bookingEvent.getUsername())
                 .eventId(bookingEvent.getEventId())
                 .ticketCount(bookingEvent.getTicketCount())
                 .totalPrice(bookingEvent.getTotalPrice())
@@ -56,7 +56,7 @@ public class BookingService {
     private BookingEvent createBookingEvent(final BookingRequest request,
                                             final InventoryResponse inventoryResponse) {
         return BookingEvent.builder()
-                .userId(request.getUserId())
+                .username(request.getUsername())
                 .eventId(request.getEventId())
                 .ticketCount(request.getTicketCount())
                 .totalPrice(inventoryResponse.getTicketPrice().multiply(BigDecimal.valueOf(request.getTicketCount())))

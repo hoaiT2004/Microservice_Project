@@ -31,8 +31,8 @@ public class Order {
     @Column(name = "placed_at", updatable = false, nullable = false)
     private LocalDateTime placedAt;
 
-    @Column(name = "customer_id")
-    private Long customerId;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "event_id")
     private Long eventId;

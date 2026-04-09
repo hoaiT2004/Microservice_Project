@@ -1,7 +1,6 @@
 package com.example.order_service.service;
 
 import com.example.booking_service.event.BookingEvent;
-import com.example.order_service.client.InventoryServiceClient;
 import com.example.order_service.entity.Order;
 import com.example.order_service.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +12,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrderService {
     private OrderRepository orderRepository;
-    private InventoryServiceClient inventoryServiceClient;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository,
-                        InventoryServiceClient inventoryServiceClient) {
+    public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.inventoryServiceClient = inventoryServiceClient;
     }
 
     @KafkaListener(topics = "booking", groupId = "order-service")
@@ -30,14 +26,12 @@ public class OrderService {
         Order order = createOrder(bookingEvent);
         orderRepository.saveAndFlush(order);
 
-        // Update Inventory
-        inventoryServiceClient.updateInventory(order.getEventId(), order.getTicketCount());
         log.info("Inventory updated for event {} with {} tickets", order.getEventId(), order.getTicketCount());
     }
 
     private Order createOrder(BookingEvent bookingEvent) {
         return Order.builder()
-                .customerId(bookingEvent.getUserId())
+                .username(bookingEvent.getUsername())
                 .eventId(bookingEvent.getEventId())
                 .ticketCount(bookingEvent.getTicketCount())
                 .totalPrice(bookingEvent.getTotalPrice())

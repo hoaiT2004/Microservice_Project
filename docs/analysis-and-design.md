@@ -45,14 +45,14 @@ List the microservices in your system and their responsibilities.
 
 Mỗi dịch vụ duy trì cơ sở dữ liệu riêng:
 
+- **Cơ Sở Dữ Liệu Auth Service**:
+  - `customer`: Thông tin về người dùng (khách hàng)
+    ![![Cơ sở dữ liệu của booking service](./assets/auth_db.png)](./assets/auth_db.png)
+
 - **Cơ Sở Dữ Liệu Inventory Service**:
   - `venue`: Thông tin địa điểm tổ chức sự kiện
   - `event`: Thông tin về sự kiện cũng như lượng vé của sự kiện đó
     ![![Cơ sở dữ liệu của inventory service](./assets/inventory_db.png)](./assets/inventory_db.png)
-
-- **Cơ Sở Dữ Liệu Auth Service**:
-  - `customer`: Thông tin về người dùng (khách hàng)
-    ![![Cơ sở dữ liệu của booking service](./assets/auth_db.png)](./assets/auth_db.png)
 
 - **Cơ Sở Dữ Liệu Order Service**:
   - `order`: Thông tin về yêu cầu đặt vé của người dùng

@@ -716,6 +716,305 @@ a:hover {
 
 
 /* ============================================================
+   Home Page
+   ============================================================ */
+
+.home-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - var(--navbar-h));
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f9fafb 60%);
+}
+
+.home-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+}
+
+.home-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.home-card h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.home-subtitle {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.home-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-home-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-home-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-home-secondary {
+    background: var(--card-bg);
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-home-secondary:hover {
+    background: var(--primary-light);
+}
+
+
+/* ============================================================
+   Search Bar (Events Page)
+   ============================================================ */
+
+.search-bar {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    background: var(--card-bg);
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.search-field {
+    flex: 1;
+}
+
+.search-field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+}
+
+.search-field input {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.search-field input:focus {
+    border-color: var(--primary);
+}
+
+.btn-search {
+    white-space: nowrap;
+    padding: 0.6rem 1.5rem;
+}
+
+
+/* ============================================================
+   Event Table (Events Page)
+   ============================================================ */
+
+.event-table {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.event-table-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 2fr 1fr 120px;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-table-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 2fr 1fr 120px;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    font-size: 0.9rem;
+    transition: background 0.1s;
+}
+
+.event-table-row:last-child {
+    border-bottom: none;
+}
+
+.event-table-row:hover {
+    background: var(--primary-light);
+}
+
+.col-event {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.col-venue,
+.col-address,
+.col-capacity {
+    color: var(--text-muted);
+}
+
+.btn-detail {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.btn-detail:hover {
+    background: var(--primary-dark);
+}
+
+
+/* ============================================================
+   Booking Success Card (standalone page)
+   ============================================================ */
+
+.booking-success-card {
+    max-width: 480px;
+    margin: 2rem auto;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2.5rem 2rem;
+    text-align: center;
+}
+
+.booking-success-card h2 {
+    font-size: 1.4rem;
+    color: var(--success);
+    margin-bottom: 1.25rem;
+}
+
+
+/* ============================================================
+   My Tickets Page
+   ============================================================ */
+
+.tickets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ticket-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.ticket-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--primary-light);
+    border-bottom: 1px solid var(--border);
+}
+
+.ticket-card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.ticket-id {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.ticket-card-body {
+    padding: 1.25rem;
+}
+
+.ticket-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+}
+
+.ticket-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.ticket-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.ticket-value {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+
+/* ============================================================
    Responsive
    ============================================================ */
 
@@ -740,6 +1039,23 @@ a:hover {
         font-size: 1.3rem;
     }
     .auth-card {
+        padding: 2rem 1.5rem;
+    }
+    .search-bar {
+        flex-direction: column;
+    }
+    .event-table-header,
+    .event-table-row {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+    }
+    .event-table-header {
+        display: none;
+    }
+    .event-table-row {
+        padding: 1rem 1.25rem;
+    }
+    .home-card {
         padding: 2rem 1.5rem;
     }
 }

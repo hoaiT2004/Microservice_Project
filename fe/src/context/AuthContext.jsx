@@ -1,36 +1,33 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from "react";
 
-const AuthContext = createContext(null)
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(() => {
-    const accessToken = localStorage.getItem('accessToken')
-    const username = localStorage.getItem('username')
-    const customerId = localStorage.getItem('customerId')
-    return accessToken ? { accessToken, username, customerId } : null
-  })
+    const accessToken = localStorage.getItem("accessToken");
+    const username = localStorage.getItem("username");
+    return accessToken ? { accessToken, username } : null;
+  });
 
-  const login = (accessToken, refreshToken, username, customerId) => {
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('refreshToken', refreshToken)
-    localStorage.setItem('username', username)
-    localStorage.setItem('customerId', String(customerId))
-    setAuth({ accessToken, username, customerId: String(customerId) })
-  }
+  const login = (accessToken, refreshToken, username) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("username", username);
+    setAuth({ accessToken, username });
+  };
 
   const logout = () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('username')
-    localStorage.removeItem('customerId')
-    setAuth(null)
-  }
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("username");
+    setAuth(null);
+  };
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

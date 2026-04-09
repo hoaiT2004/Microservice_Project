@@ -18,14 +18,17 @@ api.interceptors.response.use(
     (response) => response,
     async(error) => {
         const original = error.config
-        if (error.response ? .status === 401 && !original._retry) {
+        if (error.response?.status === 401 && !original._retry) {
             original._retry = true
             const refreshToken = localStorage.getItem('refreshToken')
             if (refreshToken) {
                 try {
                     const res = await axios.post('/api/v1/auth/refresh', { refreshToken })
-                    const { accessToken } = res.data
+                    const { accessToken, refreshToken: newRefreshToken } = res.data
                     localStorage.setItem('accessToken', accessToken)
+                    if (newRefreshToken) {
+                        localStorage.setItem('refreshToken', newRefreshToken)
+                    }
                     original.headers.Authorization = `Bearer ${accessToken}`
                     return api(original)
                 } catch {

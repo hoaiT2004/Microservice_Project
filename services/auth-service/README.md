@@ -6,7 +6,6 @@ Auth Service là service xác thực và phân quyền người dùng, cung cấ
 
 ## Chức năng chính
 
-- Đăng ký tài khoản người dùng mới
 - Đăng nhập và cấp phát JWT access token + refresh token
 - Làm mới access token khi hết hạn
 - Xác thực tính hợp lệ của token (dùng bởi API Gateway)
@@ -16,7 +15,6 @@ Auth Service là service xác thực và phân quyền người dùng, cung cấ
 | Endpoint                    | Phương thức | Mô tả                                        |
 |-----------------------------|-------------|----------------------------------------------|
 | `/health`                   | GET         | Kiểm tra trạng thái hoạt động của service    |
-| `/api/v1/auth/register`     | POST        | Đăng ký tài khoản người dùng mới             |
 | `/api/v1/auth/login`        | POST        | Đăng nhập, nhận access token + refresh token |
 | `/api/v1/auth/refresh`      | POST        | Làm mới access token bằng refresh token      |
 | `/api/v1/auth/validate`     | GET         | Xác thực tính hợp lệ của token               |
@@ -37,7 +35,7 @@ Response: { "status": "ok" }
 
 Service sử dụng cơ sở dữ liệu MySQL với bảng:
 
-- `user`: Lưu thông tin tài khoản người dùng (username, password đã hash, v.v.)
+- `user`: Lưu thông tin tài khoản người dùng (username, password đã hash, email, name, address)
 
 ## Kết nối với các Service khác
 
