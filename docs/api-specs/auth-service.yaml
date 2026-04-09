@@ -110,6 +110,8 @@ components:
           type: string
         refreshToken:
           type: string
+        username:
+          type: string
     RefreshTokenRequest:
       type: object
       properties:

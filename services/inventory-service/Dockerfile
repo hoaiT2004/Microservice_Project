@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Setting up environment and port
-EXPOSE 8080
+EXPOSE 8082
 
 # Run the application with proper memory and JVM settings
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -4,115 +4,38 @@ info:
   description: Inventory Service API for Ticket Booking Microservices System
   version: v1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8082
     description: Generated server url
 paths:
-  /api/v1/inventory/event/{eventId}/capacity/{capacity}:
-    put:
-      tags:
-        - inventory-controller
-      operationId: updateEventCapacity
-      parameters:
-        - name: eventId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: capacity
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-  /api/v1/inventory/venue:
-    post:
-      tags:
-        - inventory-controller
-      operationId: inventoryCreateVenue
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Venue'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
-  /api/v1/inventory/event:
-    post:
-      tags:
-        - inventory-controller
-      operationId: inventoryCreateEvent
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventInventoryRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
   /api/v1/inventory/venues:
     get:
       tags:
         - inventory-controller
-      operationId: inventoryGetAllVenues
+      operationId: inventoryGetAllVenuesEvent
+      parameters:
+        - name: venue
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: event
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
       responses:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/VenueInventoryResponse'
-  /api/v1/inventory/venue/{venueId}:
-    get:
-      tags:
-        - inventory-controller
-      operationId: inventoryByVenueId
-      parameters:
-        - name: venueId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/VenueInventoryResponse'
-  /api/v1/inventory/events:
-    get:
-      tags:
-        - inventory-controller
-      operationId: inventoryGetAllEvents
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EventInventoryResponse'
   /api/v1/inventory/event/{eventId}:
-    get:
+    post:
       tags:
         - inventory-controller
       operationId: inventoryForEvent
@@ -123,13 +46,22 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: ticketsToBook
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 0
       responses:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EventInventoryResponse'
+        '400':
+          description: Not enough tickets or event not found
 components:
   schemas:
     Venue:
@@ -145,19 +77,6 @@ components:
         totalCapacity:
           type: integer
           format: int64
-    EventInventoryRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        totalCapacity:
-          type: integer
-          format: int64
-        ticketPrice:
-          type: number
-        venueId:
-          type: integer
-          format: int64
     VenueInventoryResponse:
       type: object
       properties:
@@ -171,6 +90,10 @@ components:
         totalCapacity:
           type: integer
           format: int64
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventInventoryResponse'
     EventInventoryResponse:
       type: object
       properties:

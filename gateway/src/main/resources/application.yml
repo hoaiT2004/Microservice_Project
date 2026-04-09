@@ -43,6 +43,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
 
 # Actuator
 management:
@@ -91,5 +93,7 @@ springdoc:
         url: /docs/inventory_service/v3/api-docs
       - name: Booking Service
         url: /docs/booking_service/v3/api-docs
+      - name: Order Service
+        url: /docs/order_service/v3/api-docs
   api-docs:
     path: /v3/api-docs

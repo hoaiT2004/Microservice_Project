@@ -30,9 +30,8 @@ components:
     BookingRequest:
       type: object
       properties:
-        userId:
-          type: integer
-          format: int64
+        username:
+          type: string
         eventId:
           type: integer
           format: int64
@@ -42,9 +41,8 @@ components:
     BookingResponse:
       type: object
       properties:
-        userId:
-          type: integer
-          format: int64
+        username:
+          type: string
         eventId:
           type: integer
           format: int64
