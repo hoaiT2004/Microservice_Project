@@ -7,12 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users") // Using a different table name to avoid conflicts
+@Table(name = "customers") // Using a different table name to avoid conflicts
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +23,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = true)
+    private String name;
+
+    @Column(nullable = true)
+    private String address;
+
+
     @Column(unique = true, nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private String role; // "ADMIN", "CUSTOMER"
 }

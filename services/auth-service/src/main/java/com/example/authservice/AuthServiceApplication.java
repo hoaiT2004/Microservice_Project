@@ -1,6 +1,6 @@
 package com.example.authservice;
 
-import com.example.authservice.entity.User;
+import com.example.authservice.entity.Customer;
 import com.example.authservice.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +29,21 @@ public class AuthServiceApplication {
     @PostConstruct
     public void seedUsers() {
         List<UserSeed> demoUsers = Arrays.asList(
-                new UserSeed("admin", "admin@example.com", "admin123", "ADMIN"),
-                new UserSeed("manager", "manager@example.com", "manager123", "ADMIN"),
-                new UserSeed("customer1", "customer1@example.com", "customer123", "CUSTOMER"),
-                new UserSeed("customer2", "customer2@example.com", "customer123", "CUSTOMER"),
-                new UserSeed("customer3", "customer3@example.com", "customer123", "CUSTOMER")
+                new UserSeed("customer1", "customer1@example.com", "customer123", "Nguyen Xuan Hoa", "Ha Noi"),
+                new UserSeed("customer2", "customer2@example.com", "customer123", "Nguyen Van Hoa", "Ha Noi"),
+                new UserSeed("customer3", "customer3@example.com", "customer123", "Tran Xuan Van", "Ha Noi"),
+                new UserSeed("customer4", "customer4@example.com", "customer123", "Le Xuan Nam", "Ha Noi"),
+                new UserSeed("customer5", "customer5@example.com", "customer123", "Pham Xuan Anh", "Ha Noi")
         );
 
         int createdUsers = 0;
         for (UserSeed seed : demoUsers) {
-            User user = User.builder()
+            Customer user = Customer.builder()
                     .username(seed.username)
                     .email(seed.email)
                     .password(passwordEncoder.encode(seed.password))
-                    .role(seed.role)
+                    .name(seed.name)
+                    .address(seed.address)
                     .build();
 
             userRepository.save(user);
@@ -50,19 +51,22 @@ public class AuthServiceApplication {
         }
 
         System.out.println(createdUsers);
-}
+    }
 
     private static class UserSeed {
         private final String username;
         private final String email;
         private final String password;
-        private final String role;
+        private final String name;
+        private final String address;
 
-        private UserSeed(String username, String email, String password, String role) {
+
+        public UserSeed(String username, String email, String password, String name, String address) {
             this.username = username;
             this.email = email;
             this.password = password;
-            this.role = role;
+            this.name = name;
+            this.address = address;
         }
     }
 }

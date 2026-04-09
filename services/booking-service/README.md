@@ -2,12 +2,10 @@
 
 ## Tổng quan
 
-Booking Service là service xử lý yêu cầu đặt vé của người dùng, cũng như quản lý thông tin người dùng.
+Booking Service là service xử lý yêu cầu đặt vé của người dùng.
 
 ## Chức năng chính
 
-- Đăng nhập, đăng ký người dùng mới
-- Xem thông tin người dùng
 - Xử lý yêu cầu đặt vé từ người dùng
 
 ## Cấu trúc API
@@ -15,8 +13,6 @@ Booking Service là service xử lý yêu cầu đặt vé của người dùng,
 | Endpoint                | Phương thức | Mô tả                                        |
 |-------------------------|-------------|----------------------------------------------|
 | `/health`               | GET         | Kiểm tra trạng thái hoạt động của service    |
-| `/api/v1/auth/register` | POST        | Tạo thông tin người dùng mới                 |
-| `/api/v1/auth/login`    | POST        | Đăng nhập vào tài khoản người dùng hiện có   |
 | `/api/v1/booking`       | POST        | Tạo yêu cầu đặt vé cho sự kiện               |
 
 ### Health Check
@@ -28,9 +24,7 @@ Response: { "status": "ok" }
 
 ## Mô hình dữ liệu
 
-Service sử dụng cơ sở dữ liệu MySQL với các bảng chính:
-
-- `customer`: Lưu thông tin người dùng (khách hàng)
+Không có
 
 ## Kết nối với các Service khác
 
@@ -59,9 +53,7 @@ eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 ### Cấu hình cơ sở dữ liệu
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/booking_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=24052004
+Không có
 ```
 
 ### Lệnh chạy
@@ -90,9 +82,7 @@ docker run -p 8081:8081 booking-service
 
 ## Mô hình dữ liệu
 
-Service sử dụng cơ sở dữ liệu MySQL với các bảng chính:
-
-- `customer`: Lưu thông tin người dùng (khách hàng)
+Không có
 
 ## Kết nối với các Service khác
 
@@ -120,9 +110,7 @@ eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 ### Cấu hình cơ sở dữ liệu
 
 ```properties
-sspring.datasource.url=jdbc:mysql://localhost:3306/booking_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=123456
+Không có
 ```
 
 ### Lệnh chạy

@@ -175,7 +175,7 @@ Compose.
 Cơ sở dữ liệu được tổ chức theo mô hình microservices, với mỗi dịch vụ quản lý schema riêng:
 
 - `inventory_db`: Lưu trữ thông tin địa điểm, sự kiện
-- `booking_db`: Lưu trữ thông tin người dùng
+- `auth_db`: Lưu trữ thông tin người dùng
 - `order_db`: Lưu trữ yêu cầu đặt vé hợp lệ
 
 Script `init-db.sql` tạo các database và bảng cần thiết, đồng thời thiết lập các mối quan hệ và chèn dữ liệu mẫu để kiểm

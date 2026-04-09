@@ -12,5 +12,4 @@ public class RegisterRequest {
     private String password;
     private String email;
     private String name;
-    private String role; // Optional, can be set to "CUSTOMER" by default
 }

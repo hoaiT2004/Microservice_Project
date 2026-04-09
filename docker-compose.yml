@@ -59,9 +59,6 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/booking_db?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123456
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka-broker:29092
       - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=booking

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -51,10 +49,6 @@ public class JwtService {
         }
     }
 
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
     public void validateToken(String token, UserDetails userDetails) {
         try {
             if (!extractUsername(token).equals(userDetails.getUsername())) {
@@ -70,17 +64,15 @@ public class JwtService {
     }
 
     public String generateAccessToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails, accessExpiration);
+        return generateToken(userDetails, accessExpiration);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails, refreshExpiration);
+        return generateToken(userDetails, refreshExpiration);
     }
 
-    private String generateToken(Map<String, Object> claims, UserDetails userDetails, long expiration) {
-        claims.put("roles", userDetails.getAuthorities());
+    private String generateToken(UserDetails userDetails, long expiration) {
         return Jwts.builder()
-                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

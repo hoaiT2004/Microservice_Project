@@ -4,7 +4,7 @@ import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.dto.RefreshTokenRequest;
 import com.example.authservice.dto.RegisterRequest;
-import com.example.authservice.entity.User;
+import com.example.authservice.entity.Customer;
 import com.example.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +17,6 @@ import java.util.Date;
 
 @Service
 public class AuthService {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtService jwtService;
