@@ -30,14 +30,14 @@ Microservices. Nó giải thích các quyết định về kiến trúc và các
 
 List the microservices in your system and their responsibilities.
 
-| Tên dịch vụ           | Trách nhiệm                                                          | Stack công nghệ                    |
-|------------------------|----------------------------------------------------------------------|------------------------------------|
-| Inventory Service      | Quản lý thông tin địa điểm tổ chức và sự kiện                        | Spring Boot, MySQL                 |
-| Booking Service        | Quản lý thông tin người dùng và xử lý yêu cầu đặt vé                 | Spring Boot, MySQL, Kafka          |
-| Order Service          | Xử lý các yêu cầu đặt vé từ Booking service và cập nhật số lượng vé  | Spring Boot, MySQL, Kafka          |
-| Auth Service           | Xác thực người dùng, cấp phát và xác thực JWT token                  | Spring Boot, MySQL, Spring Security|
-| Eureka Server          | Khám phá và đăng ký dịch vụ                                          | Spring Cloud Netflix Eureka Server |
-| Gateway                | Định tuyến yêu cầu và đóng vai trò như điểm vào hệ thống             | Spring Cloud Gateway               |
+| Tên dịch vụ           | Trách nhiệm                                                         | Stack công nghệ                    |
+|------------------------|---------------------------------------------------------------------|------------------------------------|
+| Inventory Service      | Quản lý thông tin địa điểm tổ chức và sự kiện                       | Spring Boot, MySQL                 |
+| Booking Service        | Xử lý yêu cầu đặt vé                                                | Spring Boot, MySQL, Kafka          |
+| Order Service          | Xử lý các yêu cầu đặt vé từ Booking service và cập nhật số lượng vé | Spring Boot, MySQL, Kafka          |
+| Auth Service           | Xác thực người dùng, cấp phát và xác thực JWT token                 | Spring Boot, MySQL, Spring Security|
+| Eureka Server          | Khám phá và đăng ký dịch vụ                                         | Spring Cloud Netflix Eureka Server |
+| Gateway                | Định tuyến yêu cầu và đóng vai trò như điểm vào hệ thống            | Spring Cloud Gateway               |
 
 ---
 
@@ -45,14 +45,14 @@ List the microservices in your system and their responsibilities.
 
 Mỗi dịch vụ duy trì cơ sở dữ liệu riêng:
 
+- **Cơ Sở Dữ Liệu Auth Service**:
+  - `customer`: Thông tin về người dùng (khách hàng)
+    ![![Cơ sở dữ liệu của booking service](./assets/auth_db.png)](./assets/auth_db.png)
+
 - **Cơ Sở Dữ Liệu Inventory Service**:
   - `venue`: Thông tin địa điểm tổ chức sự kiện
   - `event`: Thông tin về sự kiện cũng như lượng vé của sự kiện đó
     ![![Cơ sở dữ liệu của inventory service](./assets/inventory_db.png)](./assets/inventory_db.png)
-
-- **Cơ Sở Dữ Liệu Booking Service**:
-  - `customer`: Thông tin về người dùng (khách hàng)
-    ![![Cơ sở dữ liệu của booking service](./assets/booking_db.png)](./assets/booking_db.png)
 
 - **Cơ Sở Dữ Liệu Order Service**:
   - `order`: Thông tin về yêu cầu đặt vé của người dùng
@@ -114,4 +114,4 @@ Kiến trúc này hỗ trợ các yêu cầu của nền tảng đặt vé tươ
 
 ## Tác Giả
 
-- Nhóm 18
+- Nhóm 9

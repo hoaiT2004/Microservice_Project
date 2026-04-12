@@ -9,8 +9,8 @@
 - **Eureka Server** (port 8761): Cung cấp dịch vụ khám phá và đăng ký service.
 - **Auth Service** (port 8085): Xác thực người dùng, cấp phát và xác thực JWT access/refresh token.
 - **Inventory Service** (port 8082): Quản lý thông tin sự kiện và địa điểm tổ chức sự kiện.
-- **Booking Service** (port 8081): Quản lý thông tin người dùng và xử lý yêu cầu đặt vé.
-- **Order Service** (port 8083): Xử lý yêu cầu đặt vé và cập nhật số lượng vé sự kiện.
+- **Booking Service** (port 8081): Xử lý yêu cầu đặt vé.
+- **Order Service** (port 8083): Lưu thông tin đặt vé.
 
 ## Health Check
 
@@ -29,13 +29,12 @@ Response: { "status": "ok" }
 ## Luồng Dữ Liệu
 1. Người dùng gửi yêu cầu đặt vé tới hệ thống thông qua API: `/api/v1/booking`.
 2. API Gateway xác thực JWT token bằng cách gọi Auth Service.
-3. Request được điều hướng tới Booking Service.
-4. Booking Service kiểm tra người dùng hợp lệ.
-5. Booking Service gọi Inventory Service để kiểm tra thông tin vé và số lượng còn lại.
+3. Auth Service kiểm tra người dùng hợp lệ.
+4. Request được điều hướng tới Booking Service.
+5. Booking Service gọi Inventory Service để kiểm tra xem số lượng vé người dùng đặt có hợp lệ hay không. Nếu hợp lệ thì sẽ cập nhật lại số lượng vé.
 6. Booking Service gửi yêu cầu đặt vé tới Kafka topic `booking`.
 7. Order Service nhận và xử lý message từ Kafka.
 8. Order Service lưu order vào DB.
-9. Order Service gọi Inventory Service để cập nhật số lượng vé.
 
 ## Kafka Topics
 
